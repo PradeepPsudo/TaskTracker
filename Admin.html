@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin</title>
+	<script type="text/javascript" src="Admin.js"></script>
+	<link rel="stylesheet" type="text/css" href="Admin.css">
+<!-- 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8"  src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> -->
+  <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="d3.min.js"></script>
+ <script type="text/javascript" src="jquery.table2excel.js"></script>
+  
+
+	<!-- <script >
+
+  "{"Pradeep P":[{"task":"Gen List ","status":"None"},{"task":"Chart Rendering","status":"In-Progress"},{"task":"Search Enhancement","status":"Blocked"},{"task":"Dragula Itegration","status":"Completed"},{"task":"Filter Status for User","status":"None"},{"task":"Filter Status for Admin","status":"None"},{"task":"Add DeadLines","status":"None"},{"task":"Day to Day Progress","status":"None"}],"Darshan Sagar L":[{"task":"gen With Js","status":"None"}],"Harish Babu":[{"task":"Search Enhancement","status":"None"}],"Sahas Chowdry":[{"task":"Generation Changes","status":"None"}]}"
+
+  API KEy: AIzaSyA75UBBQ92Y97AxOmOypgAELGoLlXiSVO4
+  client Secret :QywZjrDNguia1mhs5GUK3d13
+  client Id: 921831266818-2htlqd9tv56f6p81spn70bjh14gkcl7c.apps.googleusercontent.com
+
+
+
+  
+  APIKEY :H618_sRZFNArS5zt8yFXfQ
+
+  $.ajax({
+  type: 'POST',
+  url: 'https://mandrillapp.com/api/1.0/messages/send.json',
+  data: {
+    'key': 'H618_sRZFNArS5zt8yFXfQ',
+    'message': {
+      'from_email': 'pradeepp1994@gmail.com',
+      'to': [
+          {
+            'email': 'pradeepp1994@gmail.com',
+            'name': 'RECIPIENT NAME (OPTIONAL)',
+            'type': 'to'
+          }
+        ],
+      'autotext': 'true',
+      'subject': 'YOUR SUBJECT HERE!',
+      'html': 'YOUR EMAIL CONTENT HERE! YOU CAN USE HTML!'
+    }
+  }
+ }).done(function(response) {
+   console.log(response); // if you're into that sorta thing
+ });
+}
+		document.onload = function(e){
+			debugger;
+			initTable();
+		}
+	</script> -->
+
+  <<!-- script type="text/javascript">
+    <script Language = "javascript"> 
+
+var email = "email addresses" 
+// separate addresses by commas, no spaces //
+var subject = "subject" 
+var body = "body" 
+
+document.write("<form name="form" action=\"mailto:"+ email +"\?subject="+ subject +"\&body="+ body +"\" method=\"post\" enctype=\"text/plain\"></form>") 
+
+</script> 
+
+<body onload="document.form.submit()">
+  </script> -->
+</head>
+<body>
+ <div> 
+  <input type="button" name="" value="Add Task" onclick="addTask()">
+  <input type="button" name="" value="Delete Task" onclick="deleteTask()">
+  <label for="filterByUser">User:</label>
+  <select id="filterByUser" onchange="filterTask(this)">
+    <option value="All"> All</option>
+    <option value="Pradeep P"> Pradeep P</option>
+    <option value="Darshan Sagar L">Darshan Sagar L</option>
+    <option value="Harish Babu">Harish Babu</option>
+    <option value="Sahas Chowdry">Sahas Chowdry</option>
+  </select>
+  <label for="filterByStatus">Status:</label>
+  <select id="filterByStatus" onchange="filterTask(this)">
+      <option value="All">All</option>
+      <option value="None">None</option>
+      <option value="In-Progress"> In-Progress</option>
+      <option value="Blocked"> Blocked</option>
+      <option value="Completed"> Completed</option>
+    </select>
+  <table id="tasktable"  border="1">
+    <thead>
+    <th>Select</th>
+    <th>Task Number</th>
+  	<th style="width: 50%">Task Description</th>
+  	<th>Assignee</th>
+  	<th>Task State</th>
+    <th>Estimated Time</th>
+    <th>Available Time</th>
+    <th>Remarks</th>
+  	</thead>
+  	
+  	<tbody id="taskBody">
+  		<tr>
+  			<td><input type="checkbox" name="" onchange="addCheckboxClass(this)"></td>
+  			<td> 1</td>
+  			<td>AutoComplete Feature</td>
+  			<td>
+  				<select onchange="filterByUser()">
+  					<option value="Pradeep P"> Pradeep P</option>
+  					<option value="Darshan Sagar L">Darshan Sagar L</option>
+  					<option value="Harish Babu">Harish Babu</option>
+  					<option value="Sahas Chowdry">Sahas Chowdry</option>
+  				</select>
+  			</td>
+  			<td> 
+  			<select>
+				<option >None</option>
+				<option selected="selected"> In-Progress</option>
+				<option> Blocked</option>
+				<option> Completed</option>
+  			</select>
+  			</td>
+  		</tr>
+  	</tbody>
+  </table>
+  <input type="button" name="" value="submit" style="margin-left: 25%" onclick="savePoData()">
+ </div>
+ <div id="adminChart"></div>
+ <div class="popup">Click me to toggle the popup!
+ <!--  <span class="popuptext" id="myPopup" >A Simple Popup!</span> -->
+ 	 <div id="myPopup" class="popuptext">
+ 	<form>
+ 		<label for="popupdescription">Description:</label>
+ 		<input id="popupdescription" type="text" name="" placeholder="Type Description" value=""><br>
+ 		<label for="assignee">Assignee:</label>
+ 		<select id="assignee" >
+ 			<option selected="selected" value="Pradeep P">Pradeep P</option>
+ 			<option value="Darshan Sagar L">Darshan Sagar L</option>
+ 			<option value="Harish Babu">Harish Babu</option>
+ 			<option value="Sahas Chowdry">Sahas Chowdry</option>
+ 		</select>
+ 		<label for="status">Status:</label>
+ 		<select id="status" onchange="onStatusChange(this)">
+ 			<option value="None">None</option>
+			<option value="In-Progress"> In-Progress</option>
+			<option value="Blocked"> Blocked</option>
+			<option value="Completed"> Completed</option>
+ 		</select>
+    <label for="estimatedtime">Estimated Time</label>
+    <input type="text" id="estimatedtime">
+ 	</form>
+ 	<input type="button" name="" value="Apply" onclick="toggleFunction(event)">
+ 	<input type="button" name="" value="Reset">
+ 	</div> 
+</div>
+<button id="btnExport" onclick="table2excelAdmin();"> EXPORT </button>    
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> User</title>
+	<script type="text/javascript" src="User.js"></script>
+<!-- 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
+ <script type="text/javascript" charset="utf-8"  src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> -->
+   <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="d3.min.js"></script>
+ <script type="text/javascript" src="jquery.table2excel.js"></script>
+</head>
+<body>
+<label for="userStatus">Status:</label>
+<select id="userStatus" onchange="filterUserStatus(this)">
+      <option value="All">All</option>
+      <option value="None">None</option>
+      <option value="In-Progress"> In-Progress</option>
+      <option value="Blocked"> Blocked</option>
+      <option value="Completed"> Completed</option>
+</select>
+ <div>
+ 	<table id="usertable"  border="1" style="width: 50px,height:50px">
+    <thead>
+    <th>Task Number</th>
+  	<th style="width: 50%">Task Description</th>
+  	<th>AssignedBy</th>
+  	<th>Assign To</th>
+  	<th>Task State</th>
+    <th>Estimated Time</th>
+    <th>Time Spent</th>
+    <th>Remarks</th>
+  	</thead>
+  	
+  	<tbody id="usertaskbody">
+  		<!-- <tr>
+  			<td> 1</td>
+  			<td>AutoComplete Feature</td>
+  			<td>Chandu</td>
+  			<td>
+  				<select>
+  					<option value="Pradeep P"> Pradeep P</option>
+  					<option value="Darshan Sagar L">Darshan Sagar L</option>
+  					<option value="Harish Babu">Harish Babu</option>
+  					<option value="Sahas Chowdry">Sahas Chowdry</option>
+  				</select>
+  			</td>
+  			<td> 
+  			<select>
+				<option >None</option>
+				<option > In-Progress</option>
+				<option> Blocked</option>
+				<option> Completed</option>
+  			</select>
+  			</td>
+  		</tr> -->
+  	</tbody>
+  </table>
+  <input type="button" name="" value="submit" style="margin-left: 25%">
+ </div>
+ <button id="btnExport" onclick="table2excel();"> EXPORT </button>     
+ <div id="chart"></div>
+</body>
+</html>

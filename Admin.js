@@ -6,7 +6,7 @@ window.onload = function(){
   for(keys in storageDataObj){
   	var individualDataObj = storageDataObj[keys];	
   	for(var i=0;i<individualDataObj.length;i++){
-  		var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></input></td><td><input type="text" onchange="addPORemarks(this)"></td></tr>';
+  		var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></input></td><td><input type="text" onchange="addPORemarks(this)"></td><td><select onchange="changeItemType(this)"><option value="Epic"> Epic</option><option value="Stories">Stories</option><option value="Tasks">Tasks</option><option value="Bugs">Bugs</option><option value="Subtasks">Subtasks</option></select></td><td><img src="icons8-edit-image-50.png" onclick="editRespectiveRow(this)" style="width:15px"></td></tr>';
   		document.getElementById('taskBody').innerHTML += appendingRow;
   		var newRow = document.getElementById('taskBody');
 		var newRowCount =newRow.rows.length;
@@ -26,6 +26,10 @@ window.onload = function(){
 	    }else{
 	       newRow.rows[newRowCount-1].cells[7].firstChild.setAttribute("value","");
 	    }
+	    if(individualDataObj[i].itemtype!==undefined){ 
+			var tempStatus = newRow.rows[newRowCount-1].cells[8];
+			$(tempStatus).find("option[value='"+individualDataObj[i].itemtype+"']").attr("selected","selected");
+		}
 		//$(newRow.rows[newRowCount-1].cells[4]).find("select").val(individualDataObj[i].status);
 		//"{"Pradeep P":[],"Darshan Sagar L":[{"task":"Search Enhancement"}],"Harish Babu":[{"task":"New Widget Addition"}],"Sahas Chowdry":[{"task":"Generation Changes"}]}"
   	}
@@ -88,12 +92,13 @@ function addCheckboxClass(pobject){
 }
 
 function toggleFunction(e){
-	var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option  value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td></tr>';
+	var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option  value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td><td><select onchange="changeItemType(this)"><option value="Epic"> Epic</option><option value="Stories">Stories</option><option value="Tasks">Tasks</option><option value="Bugs">Bugs</option><option value="Subtasks">Subtasks</option></select></td><td><img src="icons8-edit-image-50.png" onclick="editRespectiveRow(this)" style="width:15px"></td></tr>';
 	document.getElementById('taskBody').innerHTML += appendingRow;
 	var descrption = document.getElementById("popupdescription").value;
 	var assignee = document.getElementById("assignee").value;
 	var assigneeIndex = document.getElementById("assignee").selectedIndex;
 	var status = document.getElementById("status").value;
+	var itemType = document.getElementById("itemtype").value;
 	var newRow = document.getElementById('taskBody');
 	var estimatedtime = document.getElementById("estimatedtime").value;
 	var newRowCount =newRow.rows.length;
@@ -108,6 +113,10 @@ function toggleFunction(e){
 		newRow.rows[newRowCount-1].cells[5].innerText = estimatedtime;
 		// newRow.rows[newRowCount-1].cells[6].firstChild.value  = 0;
 		newRow.rows[newRowCount-1].cells[6].firstChild.setAttribute("value",0);
+		if(itemType!==undefined){
+			var itemTypeField = newRow.rows[newRowCount-1].cells[8];
+			$(itemTypeField).find("option[value='"+itemType+"']").attr("selected","selected");
+		}
 	}else{
 		$("#taskBody").remove(newRow.rows[newRowCount-1]);
 	}
@@ -139,9 +148,10 @@ function savePoData(){
 	var assignee = document.getElementById("assignee").value;
 	var status = document.getElementById("status").value;
 	var estimatedtime = document.getElementById("estimatedtime").value;
+	var itemType = document.getElementById("itemtype").value;
 	var storageDataObj = JSON.parse(localStorage.Admin);
 	var timespent = 0;
-	var storeObj = {"task":descrption,"status":status,"estimatedtime":estimatedtime,"timespent":timespent};
+	var storeObj = {"task":descrption,"status":status,"estimatedtime":estimatedtime,"timespent":timespent,"itemtype":itemType};
 	if(checkIfExistInLocalStorage(descrption,assignee) && descrption!==""){ 
 	 storageDataObj[assignee].push(storeObj);
 	 var storageDataStr = JSON.stringify(storageDataObj);
@@ -162,24 +172,26 @@ function checkIfExistInLocalStorage(descrption,assignee){
 }
 
 function onStatusChange(value){
-	 var storageDataObj = JSON.parse(localStorage.Admin);
-	 var currentUser = $(value).parents("tr").find("select").val();
-	 var descrptionField = $(value).parents("tr").find("td")[2];
-	 var descrption = descrptionField.innerText;
-     var userData =storageDataObj[currentUser];
-     var status = $(value).val();
-     var index = $("tr").index($(value).parents("tr")[0]);
-     var itemIndex;
-     userData.forEach(function(elem,index){
-     	if(elem.task==descrption){
-     		itemIndex = index;
-     	}
-     });
-     if(itemIndex!==undefined){
-      userData[itemIndex].status = status;
- 	 }
-     localStorage.setItem("Admin",JSON.stringify(storageDataObj));
-     generateChart();
+	if(!document.getElementById("editPopUp").classList.contains("show")){ 
+		 var storageDataObj = JSON.parse(localStorage.Admin);
+		 var currentUser = $(value).parents("tr").find("select").val();
+		 var descrptionField = $(value).parents("tr").find("td")[2];
+		 var descrption = descrptionField.innerText;
+	     var userData =storageDataObj[currentUser];
+	     var status = $(value).val();
+	     var index = $("tr").index($(value).parents("tr")[0]);
+	     var itemIndex;
+	     userData.forEach(function(elem,index){
+	     	if(elem.task==descrption){
+	     		itemIndex = index;
+	     	}
+	     });
+	     if(itemIndex!==undefined){
+	      userData[itemIndex].status = status;
+	 	 }
+	     localStorage.setItem("Admin",JSON.stringify(storageDataObj));
+	     generateChart();
+ 	}
 
 }
 
@@ -232,7 +244,7 @@ for(keys in storageDataObj){
   	var individualDataObj = storageDataObj[keys];	
   	for(var i=0;i<individualDataObj.length;i++){
   		if(individualDataObj[i].status==currentStatus){ 
-	  		var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td></tr>';
+	  		var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td><td><select onchange="changeItemType(this)"><option value="Epic"> Epic</option><option value="Stories">Stories</option><option value="Tasks">Tasks</option><option value="Bugs">Bugs</option><option value="Subtasks">Subtasks</option></select></td><td><img src="icons8-edit-image-50.png" onclick="editRespectiveRow(this)" style="width:15px"></td></tr>';
 	  		document.getElementById('taskBody').innerHTML += appendingRow;
 	  		var newRow = document.getElementById('taskBody');
 			var newRowCount =newRow.rows.length;
@@ -251,6 +263,10 @@ for(keys in storageDataObj){
 		    }else{
 		       newRow.rows[newRowCount-1].cells[7].firstChild.setAttribute("value","");
 		    }
+		    if(individualDataObj[i].itemtype!==undefined){ 
+			var itemTypeField = newRow.rows[newRowCount-1].cells[8];
+			$(itemTypeField).find("option[value='"+individualDataObj[i].itemtype+"']").attr("selected","selected");
+			}
 		//$(newRow.rows[newRowCount-1].cells[4]).find("select").val(individualDataObj[i].status);
 		//"{"Pradeep P":[],"Darshan Sagar L":[{"task":"Search Enhancement"}],"Harish Babu":[{"task":"New Widget Addition"}],"Sahas Chowdry":[{"task":"Generation Changes"}]}"
   		}
@@ -260,7 +276,7 @@ for(keys in storageDataObj){
 function specificUserSpecificStatus(individualDataObj,currentStatus,currentUser){
 	for(var i=0;i<individualDataObj.length;i++){ 
 		if(individualDataObj[i].status==currentStatus){ 
-		    var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td></tr>';
+		    var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td><td><select onchange="changeItemType(this)"><option value="Epic"> Epic</option><option value="Stories">Stories</option><option value="Tasks">Tasks</option><option value="Bugs">Bugs</option><option value="Subtasks">Subtasks</option></select></td><td><img src="icons8-edit-image-50.png" onclick="editRespectiveRow(this)" style="width:15px"></td></tr>';
 			document.getElementById('taskBody').innerHTML += appendingRow;
 			var newRow = document.getElementById('taskBody');
 			var newRowCount =newRow.rows.length;
@@ -279,12 +295,16 @@ function specificUserSpecificStatus(individualDataObj,currentStatus,currentUser)
 		    }else{
 		       newRow.rows[newRowCount-1].cells[7].firstChild.setAttribute("value","");
 		    }
+		    if(individualDataObj[i].itemtype!==undefined){
+			var itemTypeField = newRow.rows[newRowCount-1].cells[8];
+			$(itemTypeField).find("option[value='"+itemType+"']").attr("selected","selected");
+		}
 		}
   	}
 }
 function specificUserAllStatus(individualDataObj,currentUser){
 	for(var i=0;i<individualDataObj.length;i++){ 
-	    var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td></tr>';
+	    var appendingRow = '<tr><td><input type="checkbox" onchange="addCheckboxClass(this)"></td><td></td><td></td><td><select><option value="Pradeep P"> Pradeep P</option><option value="Darshan Sagar L">Darshan Sagar L</option><option value="Harish Babu">Harish Babu</option><option value="Sahas Chowdry">Sahas Chowdry</option></select></td><td><select onchange="onStatusChange(this)"><option value="None">None</option><option value="In-Progress"> In-Progress</option><option value="Blocked"> Blocked</option><option value="Completed"> Completed</option></select></td><td></td><td><input type="text"></td><td><input type="text" onchange="addPORemarks(this)"></td><td><select onchange="changeItemType(this)"><option value="Epic"> Epic</option><option value="Stories">Stories</option><option value="Tasks">Tasks</option><option value="Bugs">Bugs</option><option value="Subtasks">Subtasks</option></select></td><td><img src="icons8-edit-image-50.png" onclick="editRespectiveRow(this)" style="width:15px"></td></tr>';
 		document.getElementById('taskBody').innerHTML += appendingRow;
 		var newRow = document.getElementById('taskBody');
 		var newRowCount =newRow.rows.length;
@@ -303,6 +323,10 @@ function specificUserAllStatus(individualDataObj,currentUser){
 	    }else{
 	       newRow.rows[newRowCount-1].cells[7].firstChild.setAttribute("value","");
 	    }
+	    if(individualDataObj[i].itemtype!==undefined){ 
+			var itemTypeField = newRow.rows[newRowCount-1].cells[8];
+			$(itemTypeField).find("option[value='"+individualDataObj[i].itemtype+"']").attr("selected","selected");
+		}
   	}
 }
 
@@ -422,4 +446,103 @@ function addPORemarks(value){
      var index = $("tr").index($(value).parents("tr")[0]);
      userData[index-1].remarks = remarks;
      localStorage.setItem("Admin",JSON.stringify(storageDataObj));
+}
+
+function changeItemType(value){
+	if(document.getElementById("editPopUp").classList.contains("show")){ 
+	 var storageDataObj = JSON.parse(localStorage.Admin);
+	 var currentUser = $(value).parents("tr").find("select").val();
+	 var itemTypeField = $(value).parents("tr").find("td")[8];
+	 var itemType = itemTypeField.firstElementChild.value;
+     var userData =storageDataObj[currentUser];
+     var index = $("tr").index($(value).parents("tr")[0]);
+     userData[index-1].itemtype = itemType;
+     localStorage.setItem("Admin",JSON.stringify(storageDataObj));
+ 	}
+}
+
+function editRespectiveRow(value){
+	 var popup = document.getElementById("editPopUp");
+	 popup.classList.toggle("show");
+	 var index = $("tr").index($(value).parents("tr")[0]);
+	 var rowValues = $("tr")[index].cells;
+	 document.getElementById("editpopupdescription").value =rowValues[2].innerText;
+	 document.getElementById("editassignee").value = rowValues[3].firstElementChild.value;
+	 document.getElementById("editstatus").value = rowValues[4].firstElementChild.value;
+	 document.getElementById("editestimatedtime").value = rowValues[5].innerText;
+	 document.getElementById("edititemtype").value = rowValues[8].firstElementChild.value;
+	 editRowNo = index;
+}
+	// document.getElementById("editassignee").value = rowValues[3].firstElementChild.value;
+	/* var tempSlected = rowValues[3];
+	 $(tempSlected).find("option[value='"+rowValues[3].firstElementChild.value+"']").attr("selected","selected");
+	 var tempStatus = rowValues[4];
+	 $(tempStatus).find("option[value='"+rowValues[3].firstElementChild.value+"']").attr("selected","selected");*/
+	/*var storageDataObj = JSON.parse(localStorage.Admin);
+	var currentUser = $(value).parents("tr")[0].cells[3].firstElementChild.value; 
+	var currentUserData = storageDataObj[currentUser];
+	var userDataIndex;
+	var descrption = document.getElementById("popupdescription").value;
+	var assignee = document.getElementById("assignee").value;
+	var status = document.getElementById("status").value;
+	var estimatedtime = document.getElementById("estimatedtime").value;
+	var itemType = document.getElementById("itemtype").value;
+	for(var i=0;i<currentUserData.length;i++){
+		if(currentUserData.descrption==descrption){
+			userDataIndex = i; break;
+		}
+	}
+	currentUserData[userDataIndex].descrption = descrption;
+	currentUserData[userDataIndex].assignee = assignee;
+	currentUserData[userDataIndex].status = status;
+	currentUserData[userDataIndex].estimatedtime = estimatedtime;
+	currentUserData[userDataIndex].itemType = itemType;*/
+
+
+
+	//localStorage.setItem("Admin",JSON.stringify(storageDataObj));
+	//var storeObj = {"task":descrption,"status":status,"estimatedtime":estimatedtime,"timespent":timespent,"itemtype":itemType};
+	//var index = $("tr").index($(value).parents("tr")[0]);
+	//console.log(value);
+
+	/* 
+		add One more popup for edit and on apply call different Method
+	*/
+//}
+
+function addAlteredValues(e){
+	var descrption = document.getElementById("editpopupdescription").value;
+	var assignee = document.getElementById("editassignee").value;
+	var status = document.getElementById("editstatus").value;
+	var estimatedtime = document.getElementById("editestimatedtime").value;
+	var itemType = document.getElementById("edititemtype").value;
+	var currentUSerTaskDesc = document.getElementById("editpopupdescription").innerText;
+	var storageDataObj = JSON.parse(localStorage.Admin);
+	var currentUserData = storageDataObj[assignee];
+	var index;
+	for(var i=0;i<currentUserData.length;i++){
+		if(currentUserData[i].task==descrption){
+			index = i; break;
+		}
+	}
+	if(index!==undefined){       
+		currentUserData[index].descrption = descrption;
+		currentUserData[index].assignee = assignee;
+		currentUserData[index].status = status;
+		currentUserData[index].estimatedtime = estimatedtime;
+		currentUserData[index].itemType = itemType
+		localStorage.setItem("Admin",JSON.stringify(storageDataObj));
+	}else{
+		var timespent = 0;
+		var pushData = {"task":descrption,"status":status,"estimatedtime":estimatedtime,"timespent":timespent,"itemtype":itemType};
+		currentUserData.push(pushData);
+		localStorage.setItem("Admin",JSON.stringify(storageDataObj));
+	}
+	var popup = document.getElementById("editPopUp");
+	 popup.classList.toggle("show");
+	 var row = $("tr")[editRowNo];
+	 row.cells[2] = descrption;
+	 row.cells[3].firstElementChild.value = assignee;
+	 row.cells[4].firstElementChild.value = status;
+	 row.cells[8].firstElementChild.value = itemType; 
 }

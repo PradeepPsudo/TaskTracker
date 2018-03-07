@@ -94,10 +94,11 @@ document.write("<form name="form" action=\"mailto:"+ email +"\?subject="+ subjec
     <th>Task Number</th>
   	<th style="width: 50%">Task Description</th>
   	<th>Assignee</th>
-  	<th>Task State</th>
+  	<th>Item State</th>
     <th>Estimated Time</th>
     <th>Available Time</th>
     <th>Remarks</th>
+    <th>Item Type</th>
   	</thead>
   	
   	<tbody id="taskBody">
@@ -149,10 +150,50 @@ document.write("<form name="form" action=\"mailto:"+ email +"\?subject="+ subjec
  		</select>
     <label for="estimatedtime">Estimated Time</label>
     <input type="text" id="estimatedtime">
+    <label for="itemtype">Item Type:</label>
+    <select id="itemtype" onchange="changeItemType(this)">
+      <option value="Epic">Epic</option>
+      <option value="Stories"> Stories</option>
+      <option value="Tasks"> Tasks</option>
+      <option value="Bugs"> Bugs</option>
+      <option value="Subtasks">Subtasks</option>
+    </select>
  	</form>
  	<input type="button" name="" value="Apply" onclick="toggleFunction(event)">
  	<input type="button" name="" value="Reset">
  	</div> 
+  <div id="editPopUp" class="popuptext">
+  <form>
+    <label for="editpopupdescription">Description:</label>
+    <input id="editpopupdescription" type="text" name="" placeholder="Type Description" value=""><br>
+    <label for="editassignee">Assignee:</label>
+    <select id="editassignee" >
+      <option selected="selected" value="Pradeep P">Pradeep P</option>
+      <option value="Darshan Sagar L">Darshan Sagar L</option>
+      <option value="Harish Babu">Harish Babu</option>
+      <option value="Sahas Chowdry">Sahas Chowdry</option>
+    </select>
+    <label for="editstatus">Status:</label>
+    <select id="editstatus" onchange="onStatusChange(this)">
+      <option value="None">None</option>
+      <option value="In-Progress"> In-Progress</option>
+      <option value="Blocked"> Blocked</option>
+      <option value="Completed"> Completed</option>
+    </select>
+    <label for="editestimatedtime">Estimated Time</label>
+    <input type="text" id="editestimatedtime">
+    <label for="edititemtype">Item Type:</label>
+    <select id="edititemtype" onchange="changeItemType(this)">
+      <option value="Epic">Epic</option>
+      <option value="Stories"> Stories</option>
+      <option value="Tasks"> Tasks</option>
+      <option value="Bugs"> Bugs</option>
+      <option value="Subtasks">Subtasks</option>
+    </select>
+  </form>
+  <input type="button" name="" value="Apply" onclick="addAlteredValues(event)">
+  <input type="button" name="" value="Reset">
+  </div>
 </div>
 <button id="btnExport" onclick="table2excelAdmin();"> EXPORT </button>    
 </body>

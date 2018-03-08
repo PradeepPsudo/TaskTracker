@@ -334,13 +334,19 @@ function generateChart(){
   var w = 400;
 var h = 400;
 var r = h/2;
-var aColor = [
+/*var aColor = [
     'rgb(178, 55, 56)',
     'rgb(213, 69, 70)',
     'rgb(230, 125, 126)',
     'rgb(239, 183, 182)'
 ]
-
+*/
+var aColor = [
+    'yellow',
+    'red',
+    'green',
+    'grey'
+];
 /*var data = [
     {"label":"Colorectale levermetastase (n=336)", "value":74}, 
     {"label": "Primaire maligne levertumor (n=56)", "value":12},
